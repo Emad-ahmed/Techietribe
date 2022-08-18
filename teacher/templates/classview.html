@@ -1,0 +1,103 @@
+{% extends 'base_teacher.html' %} <br />
+
+{% load static %} <br />
+
+{% block title %}Class View{% endblock title %} <br />
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/card.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+  integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+<style>
+  .actives {
+    color: white;
+    background: #000;
+  }
+</style>
+<ul class="list-group list-group-horizontal col-12">
+  <li class="list-group-item col-3 text-center bg-dark text-white">
+    <a href="{% url 'classshow' mainid %}">Stream</a>
+  </li>
+  <li class="list-group-item col-3 text-center">
+    <a href="{% url 'addwork' mainid %}">Work</a>
+  </li>
+  <li class="list-group-item col-3 text-center">
+    <a href="{% url 'examview' mainid %}">Exam Info</a>
+  </li>
+  <li class="list-group-item col-3 text-center"><a href="">People</a></li>
+</ul>
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li
+    {%
+    if
+    message.tags
+    %}
+    class="bg-{{ message.tags }} p-4 text-center"
+    {%
+    endif
+    %}
+  >
+    {{ message }}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+<div class="container mt-5">
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <textarea
+      name="annouce"
+      placeholder="Annouce something to your class"
+      id=""
+      cols="10"
+      rows="3"
+      class="form-control"
+    ></textarea>
+
+    <div class="mt-2 d-flex">
+      <button type="submit" class="btn btn-info">Post</button>
+    </div>
+  </form>
+</div>
+<hr />
+<div class="container mt-4">
+  <div class="list-group">
+    {% for ann in allannouce %}
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center mb-4 p-3"
+    >
+      {{ann.text}}
+      <span class="badge bg-primary rounded-pill"
+        ><i
+          class="fa-solid fa-ellipsis-vertical dropdown dropdown-toggle"
+          id="navbarDropdown"
+          data-bs-toggle="dropdown"
+        >
+        </i>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li>
+            <a class="dropdown-item" href="{% url 'editlist' ann.id %}">Edit</a>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item" href="{% url 'deletelist' ann.id  %}"
+              >Delete</a
+            >
+          </li>
+        </ul>
+      </span>
+    </li>
+
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}

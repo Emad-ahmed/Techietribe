@@ -1,0 +1,56 @@
+{% extends 'base_teacher.html' %} <br />
+{% load static %} <br>
+{% block title %}View Course{% endblock title %} <br />
+
+{% block content %}
+
+
+<div class="container">
+    <a href="{% url 'addlink' %}" class="btn btn-success float-right">Add Link</a>
+    {% for c in  courseview %}
+    <div class="list-group">
+        <h1 class="mt-5 text-center text-dark fw-bold mb-5">{{c.course.title}}</h1>
+        <div class="row">
+            <div class="col-lg-4"><iframe width="420" height="315" src="{{c.link1}}">
+            </iframe>
+    
+            <iframe width="420" height="315" src="{{c.link2}}">
+            </iframe>
+    
+            <iframe width="420" height="315" src="{{c.link3}}">
+            </iframe></div>
+        
+            <div class="col-lg-4"><iframe width="420" height="315" src="{{c.link4}}">
+            </iframe>
+    
+            <iframe width="420" height="315" src="{{c.link5}}">
+            </iframe>
+    
+            <iframe width="420" height="315" src="{{c.link6}}">
+            </iframe></div>
+
+        
+            <div class="col-lg-4"><iframe width="420" height="315" src="{{c.link7}}">
+            </iframe>
+    
+            <iframe width="420" height="315" src="{{c.link8}}">
+            </iframe>
+    
+            <iframe width="420" height="315" src="{{c.link9}}">
+            </iframe></div>
+
+        
+        <div class="col-lg-4 m-auto"><iframe width="420" height="315" src="{{c.link10}}">
+        </iframe></div>
+        
+    </div>
+
+
+
+
+        
+      </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

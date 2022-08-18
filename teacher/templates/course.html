@@ -1,0 +1,34 @@
+{% extends 'base_teacher.html' %} <br />
+
+{% load static %} <br />
+
+{% block title %}Course{% endblock title %} <br />
+
+{% block content %}
+
+
+<h1>All Course</h1>
+
+<div class="container">
+    <div>
+        <a href="{% url 'mycourseform' %}"  class="btn btn-info">Add Course</a>
+        
+    </div>
+    <div class="row mt-5">
+        {% for c in courseview %}
+        <div class="col-lg-4">
+            <div class="card" style="width: 18rem;">
+                <img src="{{c.img_course.url}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">{{c.title}}</h5>
+                  <p class="card-text">{{c.description}}</p>
+                  <a href="{% url 'view_course' c.id  %}" class="btn btn-primary">Full Course</a>
+                </div>
+              </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock content %}

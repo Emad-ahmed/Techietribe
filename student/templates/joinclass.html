@@ -1,0 +1,40 @@
+{% extends 'base_student.html' %} <br />
+
+{% load static %} <br />
+
+{% block title %}Join Class{% endblock title %} <br />
+
+{% block content %} {% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li
+    {%
+    if
+    message.tags
+    %}
+    class="bg-{{ message.tags }} p-4 text-center"
+    {%
+    endif
+    %}
+  >
+    {{ message }}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+<h1 class="mt-5 mb-4 text-center text-dark">Join Class</h1>
+<form action="" method="POST" class="w-50 m-auto mt-5 mb-3">
+  {% csrf_token %}
+  <div class="mb-3">
+    <input
+      type="text"
+      class="form-control"
+      name="class_code"
+      placeholder="Class Code"
+      id="code"
+    />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Join Class</button>
+</form>
+{% endblock content %}

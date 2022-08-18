@@ -1,0 +1,62 @@
+{% extends 'base.html' %} <br />
+{% load static %} <br>
+{% block title %}Login Teacher{% endblock title %} <br />
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/signup_teacher.css' %}">
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li
+    {%
+    if
+    message.tags
+    %}
+    class="bg-{{ message.tags }} p-4 text-center"
+    {%
+    endif
+    %}
+  >
+    {{ message }}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+<div class="form">
+      
+    <ul class="tab-group">
+      <li class="tab {{teacher_register}}"><a href="{% url 'teacher_register' %}">Teacher</a></li>
+      <li class="tab {{student_register}}"><a href="{% url 'student_register' %}">Student</a></li>
+    </ul>
+    
+    <div class="tab-content">
+      <div id="signup">   
+        <h1>Sign Up for Teacher</h1>
+        
+        <form action="" method="POST">
+          {% csrf_token %}
+        
+        
+        {% for fm in form %}
+
+        <div class="field-wrap">
+            {{fm}}
+            <p class="text-danger">{{fm.errors|striptags}}</p>
+        </div>
+        
+        {% endfor %}
+        
+        <a href="/" class="create">Already have an acoount?</a> <br> <br>
+        <div class="text-center">
+        <button type="submit" class="button button-block"/>Register</button>
+      </div>
+        </form>
+
+      </div>
+      
+     
+      
+    </div><!-- tab-content -->
+    
+</div> <!-- /form -->
+{% endblock content %}

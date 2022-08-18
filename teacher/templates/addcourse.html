@@ -1,0 +1,60 @@
+{% extends 'base_teacher.html' %} <br />
+
+{% load static %} <br />
+
+{% block title %}Add Course{% endblock title %} <br />
+
+{% block content %}
+
+<style>
+    input
+    {
+        color:black;
+    }
+    textarea
+    {
+      color:black;
+    }
+</style>
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li
+    {%
+    if
+    message.tags
+    %}
+    class="bg-{{ message.tags }} p-4  text-center"
+    {%
+    endif
+    %}
+  >
+    {{ message }}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<div class="container mt-5">
+
+  <h1 class="text-dark text-center fw-bold">Add Course</h1>
+    <form action="" method="POST" class="w-50 mt-5 m-auto" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        
+        {% for fm in form  %}
+        <div class="mb-3">
+            {{fm.label_tags}} {{fm}} {{fm.striptags}}
+        </div>
+        {% endfor %}
+  
+        
+    <div class="w-50 m-auto mt-5">
+        <button type="submit" class="btn btn-primary col-12" >Add Course</button>
+    </div>
+      </form>
+</div>
+
+ 
+{% endblock content %}

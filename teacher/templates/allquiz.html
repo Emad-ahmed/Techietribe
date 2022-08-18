@@ -1,0 +1,24 @@
+{% extends 'base_teacher.html' %} <br />
+
+{% load static %} <br />
+
+{% block title %}All Quiz{% endblock title %} <br />
+
+{% block content %}
+
+<div class="container">
+  {% for quiz in allquiz %}
+  <div>
+    <h3 class="text-dark">{{forloop.counter}}) {{quiz.question}}</h3>
+    <p>a) {{quiz.op1}}</p>
+    <p>b) {{quiz.op2}}</p>
+    <p>c) {{quiz.op3}}</p>
+    <p>d) {{quiz.op4}}</p>
+    <h6>answer: {{quiz.ans}}</h6>
+  </div>
+  <br />
+  <br />
+  {% endfor %}
+</div>
+
+{% endblock content %}
