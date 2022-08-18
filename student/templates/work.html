@@ -30,7 +30,7 @@
   <ul class="list-group">
     {% for work in classwork %}
     <li class="list-group-item mb-4" aria-current="true">
-      <a href="{% url 'addclassworkfullview' work.id %}">{{work.title}}</a>
+      <a href="{% url 'addclassworkfullview' work.id %}">{{work.mytopic}}</a>
     </li>
     {% endfor %}
   </ul>
