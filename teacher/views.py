@@ -1,4 +1,5 @@
 from ast import Return
+from email import message
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
 from django.views import View
@@ -15,6 +16,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseNotFound
 
 from teacher.forms import ViewCourseForm, AddlinkForm
+from student.models import CommentMain, Student, ReplyComment
 
 
 class TeacherHome(View):
@@ -69,6 +71,21 @@ class ClassShow(View):
         messages.success(request, "Successfully Saved")
         allannouce = Announcement.objects.filter(classview=classshow)[::-1]
         return render(request, 'classview.html', {'classshow': classshow, "mainid": mainid,  'allannouce': allannouce})
+
+
+class AnnView(View):
+    def get(self, request, id):
+        mainid = id
+        if request.user:
+            annoucementview = Announcement.objects.get(id=id)
+            comment_view = CommentMain.objects.filter(
+                annoucemain=annoucementview)[::-1]
+            replycomment = ReplyComment.objects.filter(
+                annoucemain__annoucemain=annoucementview)
+            print(replycomment)
+            return render(request, 'annview.html', {'annoucementview': annoucementview, 'comment_view': comment_view, "replycomment": replycomment, 'mainid': mainid})
+
+        return render(request, 'annview.html', {'annoucementview': annoucementview, 'comment_view': comment_view, "replycomment": replycomment, 'mainid': mainid})
 
 
 def userlogout(request):
@@ -275,3 +292,28 @@ class MyCourseView(View):
         coursen = ViewCourse.objects.get(pk=id)
         courseview = AddCourse.objects.filter(course=coursen)
         return render(request, "viewcourse.html", {'courseview': courseview})
+
+
+class ComentreplyView(View):
+    def post(self, request, id):
+        comment = CommentMain.objects.get(id=id)
+        replytext = request.POST.get("replytext")
+        replycom = ReplyComment(annoucemain=comment, text=replytext)
+        replycom.save()
+        messages.success(
+            request, f"You Reply {comment.mystu.first_name} {comment.mystu.last_name} Comment")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def deleltecomment(request, id):
+    comment = CommentMain.objects.get(id=id)
+    comment.delete()
+    messages.warning(request, "Delete Comment Succesfully")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def showreply(request, id):
+
+    comment = CommentMain.objects.get(id=id)
+    allreply = ReplyComment.objects.filter(annoucemain=comment)
+    return render(request, 'annview.html', {"allreply": allreply})

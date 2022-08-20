@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import MyCourseform, TeacherHome, CreateClassview, ClassShow, userlogout, deletecard, deletelist, Addworkview, ShowWorkview, deletework, PasswordChangeView, UpdateAccountView, pdf_view, EditworkView, EditAnnouceView, ExamView, ShowQuizView, MyCourse, MyCourseform, MyLinkform, MyCourseView
+from .views import MyCourseform, TeacherHome, CreateClassview, ClassShow, deleltecomment, userlogout, deletecard, deletelist, Addworkview, ShowWorkview, deletework, PasswordChangeView, UpdateAccountView, pdf_view, EditworkView, EditAnnouceView, ExamView, ShowQuizView, MyCourse, MyCourseform, MyLinkform, MyCourseView, AnnView, ComentreplyView, showreply
 urlpatterns = [
     path('', TeacherHome.as_view(), name='home'),
     path('create', CreateClassview.as_view(), name='create'),
@@ -21,5 +21,9 @@ urlpatterns = [
     path('mycourseform', MyCourseform.as_view(), name='mycourseform'),
     path('addlink', MyLinkform.as_view(), name='addlink'),
     path('view_course/<int:id>/', MyCourseView.as_view(), name='view_course'),
+    path('annonceshow/<int:id>/', AnnView.as_view(), name='annonceshow'),
+    path('comentreply/<int:id>/', ComentreplyView.as_view(), name='comentreply'),
+    path('deleltecomment/<int:id>/', deleltecomment, name='deleltecomment'),
+    path('showreply/<int:id>/', showreply, name='showreply'),
 
 ]

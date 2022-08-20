@@ -15,6 +15,14 @@ class CommentMain(models.Model):
     mystu = models.ForeignKey(Student, on_delete=models.CASCADE)
     comment = models.TextField()
 
+    def __str__(self):
+        return self.comment
+
+
+class ReplyComment(models.Model):
+    annoucemain = models.ForeignKey(CommentMain, on_delete=models.CASCADE)
+    text = models.CharField(max_length=400, default="new")
+
 
 class StudnetWork(models.Model):
     mystu = models.ForeignKey(Student, on_delete=models.CASCADE)

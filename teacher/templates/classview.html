@@ -74,7 +74,7 @@
     <li
       class="list-group-item d-flex justify-content-between align-items-center mb-4 p-3"
     >
-      {{ann.text}}
+      <a href="{% url 'annonceshow' ann.id  %}">{{ann.text}}</a>
       <span class="badge bg-primary rounded-pill"
         ><i
           class="fa-solid fa-ellipsis-vertical dropdown dropdown-toggle"
