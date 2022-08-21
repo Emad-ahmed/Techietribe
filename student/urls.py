@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import StudentHome, JoinClassView, ClassworkView, deleletwork, studentlogout, AnnouceView, WorkView, FullWorkView, deleletwork, FullCourseiew, FullCourseiewfull
+from .views import StudentHome, JoinClassView, ClassworkView, deleletwork, studentlogout, AnnouceView, WorkView, FullWorkView, deleletwork, FullCourseiew, FullCourseiewfull, deleltecommentstu, EditCommentview, showreplystu, EditStudent
 urlpatterns = [
     path('', StudentHome.as_view(), name='home'),
     path('join_class', JoinClassView.as_view(), name='join_class'),
@@ -16,4 +16,13 @@ urlpatterns = [
 
     path('deleletwork/<int:id>/',
          deleletwork, name='deleletwork'),
+    path('deleltecommentstu/<int:id>/',
+         deleltecommentstu, name='deleltecommentstu'),
+    path('editcomment/<int:id>/',
+         EditCommentview.as_view(), name='editcomment'),
+    path('showreplystu/<int:id>/',
+         showreplystu, name='showreplystu'),
+
+    path('update_account_stu',
+         EditStudent.as_view(), name='update_account_stu'),
 ]

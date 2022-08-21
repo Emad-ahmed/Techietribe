@@ -6,11 +6,13 @@ from django.views import View
 from django.http import HttpResponseRedirect
 
 from mainapp.models import Student
-from .models import JoinClass, CommentMain, StudnetWork
+from .models import JoinClass, CommentMain, StudnetWork, ReplyComment
 from teacher.models import AddClassWork, CreateClass, Announcement
 # Create your views here.
 from django.contrib import messages
 from teacher.models import AddCourse, ViewCourse
+from .forms import CommentForm
+from mainapp.forms import StudentRegisterForm
 
 
 class StudentHome(View):
@@ -169,3 +171,64 @@ def deleletwork(request, id):
     myw = StudnetWork.objects.get(id=id)
     myw.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def deleltecommentstu(request, id):
+    comment = CommentMain.objects.get(id=id)
+    comment.delete()
+    messages.warning(request, "Delete Comment Succesfully")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class EditCommentview(View):
+    def get(self, request):
+        student = request.session.get("student")
+        mycom = CommentMain.objects.get(pk=id)
+        form = CommentForm(instance=mycom)
+        if student:
+            return render(request, 'editcomment.html', {'form': form})
+
+    def post(self, request):
+        student = request.session.get("student")
+        mystu = Student.objects.get(pk=student)
+        mycom = CommentMain.objects.get(pk=id)
+        form = CommentForm(request.POST, instance=mycom)
+
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.mystu = mystu
+            obj.annoucemain = mycom.annoucemain
+            obj.save()
+            messages.success(request, "Successfully Edited")
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def showreplystu(request, id):
+
+    comment = CommentMain.objects.get(id=id)
+    allreply = ReplyComment.objects.filter(annoucemain=comment)
+    return render(request, 'anounceview.html', {"allreply": allreply})
+
+
+class EditStudent(View):
+    def get(self, request):
+        student = request.session.get("student")
+        studentst = Student.objects.get(pk=student)
+        form = StudentRegisterForm(instance=studentst)
+        if student:
+            return render(request, 'update_student.html', {'form': form})
+
+    def post(self, request, id):
+        student = request.session.get("student")
+        mystu = Student.objects.get(pk=student)
+        studentst = Student.objects.get(pk=mystu)
+        form = StudentRegisterForm(request.POST, instance=studentst)
+
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.annoucemain = mystu.password
+            obj.save()
+            messages.success(request, "Successfully Edited")
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

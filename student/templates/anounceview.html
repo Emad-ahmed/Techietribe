@@ -13,18 +13,6 @@
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 />
-<ul class="list-group list-group-horizontal col-12">
-  <li class="list-group-item bg-dark text-white col-3 text-center">
-    <a href="">Stream</a>
-  </li>
-  <li class="list-group-item col-3 text-center text-white">
-    <a href="">Work</a>
-  </li>
-  <li class="list-group-item col-3 text-center">
-    <a href="">Exam Info</a>
-  </li>
-  <li class="list-group-item col-3 text-center"><a href="">People</a></li>
-</ul>
 
 <div class="container">
   <h1 class="text-center mt-5 mb-5 text-dark fw-bold">Annoucement</h1>
@@ -54,11 +42,30 @@
   </div>
 </div>
 
-<div class="container mt -5">
+{% if allreply %}
+<div class="text-center">
+  <h2>Reply</h2>
+  {% for reply in allreply %}
+  <p>{{reply.text}}</p>
+  {% endfor %}
+</div>
+
+{% endif %}
+
+<div class="container mt-5">
   <hr class="mt-5 mb-3" />
   {% for com in comment_view %}
   <h2>{{com.mystu.first_name}} {{com.mystu.last_name}}</h2>
   <p>{{com.comment}}</p>
+  <a href="{% url 'showreplystu' com.id %}" class="mb-4 mt-4">Show Reply</a>
+  <div class="mt-3">
+    <a href="{% url 'editcomment' com.id %}" class="btn btn-sm btn-info"
+      >Edit</a
+    >
+    <a href="{% url 'deleltecommentstu' com.id %}" class="btn btn-sm btn-danger"
+      >Delete</a
+    >
+  </div>
   {% endfor %}
 </div>
 

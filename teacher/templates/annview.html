@@ -65,21 +65,24 @@
   </div>
 </div>
 
-<div>
+{% if allreply %}
+<div class="text-center">
   <h2>Reply</h2>
   {% for reply in allreply %}
   <p>{{reply.text}}</p>
   {% endfor %}
 </div>
-
+{% endif %}
 <div class="container mt -5">
   <hr class="mt-5 mb-3" />
   {% for com in comment_view %}
   <h2>{{com.mystu.first_name}} {{com.mystu.last_name}}</h2>
   <p class="border p-2">{{com.comment}}</p>
-  <a href="{% url 'showreply' com.id %}">show reply</a>
+  <a href="{% url 'showreply' com.id %}" class="mb-5">show reply</a>
   <div>
-    <a href="{% url 'deleltecomment' com.id %}" class="btn btn-sm btn-danger"
+    <a
+      href="{% url 'deleltecomment' com.id %}"
+      class="btn btn-sm btn-danger mt-3"
       >Delete</a
     >
   </div>
