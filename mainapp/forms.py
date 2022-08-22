@@ -65,3 +65,18 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ('username', 'password')
+
+
+class StudentEditRegisterForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['id_no', 'first_name',
+                  'last_name', 'email']
+
+        widgets = {
+            'id_no': forms.TextInput(attrs={'placeholder': 'Id No'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
+
+        }

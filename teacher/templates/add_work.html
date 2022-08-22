@@ -104,7 +104,8 @@ textarea:focus {
               
               
                 {% for fm in form %}
-        
+
+                <label for="">{{fm.label_tags}}</label>
     
                     {{fm}}
                     <p class="text-danger">{{fm.errors|striptags}}</p>

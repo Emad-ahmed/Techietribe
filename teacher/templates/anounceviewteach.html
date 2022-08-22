@@ -1,0 +1,72 @@
+{% extends 'base_teacher.html' %} <br />
+
+{% load static %} <br />
+
+{% block title %}{% endblock title %} <br />
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/card.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+  integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+<div class="container">
+  <h1 class="text-center mt-5 mb-5 text-dark fw-bold">Annoucement</h1>
+  <h5>{{annoucementview.classview.class_code_name}}</h5>
+  <hr />
+
+  <div class="mt-5 m-auto align-center">
+    <h1 class="text-dark">{{annoucementview.text}}</h1>
+  </div>
+
+  <hr />
+
+  <div class="m-auto">
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="form-floating">
+        <textarea
+          class="form-control text-dark"
+          name="commenttext"
+          placeholder="Leave a comment here"
+          id="floatingTextarea"
+        ></textarea>
+        <label for="floatingTextarea">Comments</label>
+      </div>
+      <button type="submit" class="btn btn-info mt-3">Comment</button>
+    </form>
+  </div>
+</div>
+
+{% if allreply %}
+<div class="text-center">
+  <h2>Reply</h2>
+  {% for reply in allreply %}
+  <p>{{reply.text}}</p>
+  {% endfor %}
+</div>
+
+{% endif %}
+
+<div class="container mt-5">
+  <hr class="mt-5 mb-3" />
+  {% for com in comment_view %}
+  <h2>{{com.mystu.first_name}} {{com.mystu.last_name}}</h2>
+  <p>{{com.comment}}</p>
+  <a href="{% url 'showreplystu' com.id %}" class="mb-4 mt-4">Show Reply</a>
+  <div class="mt-3">
+    <a href="{% url 'editcomment' com.id %}" class="btn btn-sm btn-info"
+      >Edit</a
+    >
+    <a href="{% url 'deleltecommentstu' com.id %}" class="btn btn-sm btn-danger"
+      >Delete</a
+    >
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock content %}

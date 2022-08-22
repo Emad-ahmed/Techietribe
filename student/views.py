@@ -3,7 +3,7 @@ from pickle import NONE
 from tkinter.messagebox import NO
 from django.shortcuts import redirect, render
 from django.views import View
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 
 from mainapp.models import Student
 from .models import JoinClass, CommentMain, StudnetWork, ReplyComment
@@ -12,7 +12,7 @@ from teacher.models import AddClassWork, CreateClass, Announcement
 from django.contrib import messages
 from teacher.models import AddCourse, ViewCourse
 from .forms import CommentForm
-from mainapp.forms import StudentRegisterForm
+from mainapp.forms import StudentRegisterForm, StudentEditRegisterForm
 
 
 class StudentHome(View):
@@ -181,14 +181,14 @@ def deleltecommentstu(request, id):
 
 
 class EditCommentview(View):
-    def get(self, request):
+    def get(self, request, id):
         student = request.session.get("student")
         mycom = CommentMain.objects.get(pk=id)
         form = CommentForm(instance=mycom)
         if student:
             return render(request, 'editcomment.html', {'form': form})
 
-    def post(self, request):
+    def post(self, request, id):
         student = request.session.get("student")
         mystu = Student.objects.get(pk=student)
         mycom = CommentMain.objects.get(pk=id)
@@ -214,21 +214,21 @@ def showreplystu(request, id):
 class EditStudent(View):
     def get(self, request):
         student = request.session.get("student")
-        studentst = Student.objects.get(pk=student)
-        form = StudentRegisterForm(instance=studentst)
+        studentst = Student.objects.get(id=student)
+        form = StudentEditRegisterForm(instance=studentst)
         if student:
             return render(request, 'update_student.html', {'form': form})
 
-    def post(self, request, id):
+    def post(self, request):
         student = request.session.get("student")
-        mystu = Student.objects.get(pk=student)
-        studentst = Student.objects.get(pk=mystu)
-        form = StudentRegisterForm(request.POST, instance=studentst)
+        mystu = Student.objects.get(id=student)
+
+        form = StudentEditRegisterForm(request.POST, instance=mystu)
 
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.annoucemain = mystu.password
+            obj.password = mystu.password
             obj.save()
-            messages.success(request, "Successfully Edited")
-
+        else:
+            return HttpResponse("eror")
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

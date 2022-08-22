@@ -1,7 +1,7 @@
 from pydoc import visiblename
 from pyexpat import model
 from django.contrib import admin
-from .models import CreateClass, Announcement, AddClassWork, QuesModel, ViewCourse, AddCourse
+from .models import CreateClass, Announcement, AddClassWork, QuesModel, ViewCourse, AddCourse, JoinClassteach
 # Register your models here.
 
 
@@ -38,3 +38,8 @@ class MyModelInline(admin.StackedInline):
 @admin.register(ViewCourse)
 class OtherModelAdmin(admin.ModelAdmin):
     inlines = [MyModelInline]
+
+
+@admin.register(JoinClassteach)
+class JoinClassteachAdmin(admin.ModelAdmin):
+    list_display = ['id']

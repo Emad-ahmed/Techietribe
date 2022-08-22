@@ -48,4 +48,33 @@
   </div>
 </section>
 
+<h1 class="text-dark fw-bold mt-5">Join Class</h1>
+<section class="wrapper mb-5">
+  <div class="container">
+    <div class="row">
+      {% for cr in classview %}
+      <div class="col-lg-4 mt-5">
+        <a href="{% url 'class_view_work_teach' cr.id %}">
+          <div class="card" style="width: 18rem">
+            <div class="card-body">
+              <h5 class="card-title">{{cr.myclass.class_code_name}}</h5>
+              <p class="card-text">{{cr.myclass.subject_name}}</p>
+              <p class="card-text">{{cr.myclass.section}}</p>
+              <p class="card-text">{{cr.myclass.classcode}}</p>
+            </div>
+            <hr class="mhr" />
+
+            <hr />
+            <div class="text-center">
+              <a href=""><i class="fa-solid fa-calendar-xmark me-3"></i></a>
+              <a href=""><i class="fa-solid fa-person"></i></a>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
 {% endblock content %}

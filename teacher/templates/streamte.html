@@ -1,0 +1,39 @@
+{% extends 'base_teacher.html' %} <br />
+
+{% load static %} <br />
+
+{% block title %}Stream{% endblock title %} <br />
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/card.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+  integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+<ul class="list-group list-group-horizontal col-12">
+  <li class="list-group-item bg-dark text-white col-3 text-center">
+    <a href="">Stream</a>
+  </li>
+  <li class="list-group-item col-3 text-center text-white">
+    <a href="">Work</a>
+  </li>
+  <li class="list-group-item col-3 text-center">
+    <a href="">Exam Info</a>
+  </li>
+  <li class="list-group-item col-3 text-center"><a href="">People</a></li>
+</ul>
+
+<div class="container mt-5">
+  <ul class="list-group">
+    {% for annouce in annoucement %}
+    <li class="list-group-item mb-4" aria-current="true">
+      <a href="{% url 'annouceviewteach' annouce.id  %}">{{annouce.text}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% endblock content %}

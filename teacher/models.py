@@ -42,6 +42,11 @@ Choice_Type = (
 )
 
 
+class JoinClassteach(models.Model):
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    myclass = models.ForeignKey(CreateClass, on_delete=models.CASCADE)
+
+
 class AddClassWork(models.Model):
     myclass = models.ForeignKey(
         CreateClass, on_delete=models.CASCADE)

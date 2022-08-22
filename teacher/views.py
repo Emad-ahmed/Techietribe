@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.views import View
 
 from mainapp.forms import SignForm
-from .models import CreateClass, Announcement, AddClassWork, QuesModel, AddCourse, ViewCourse
+from .models import CreateClass, Announcement, AddClassWork, JoinClassteach, QuesModel, AddCourse, ViewCourse
 from .forms import AnnouncementForm, CreateClassForm, AddClassWorkForm, MyPasswordChangeForm, QuesModelForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -22,8 +22,9 @@ from student.models import CommentMain, Student, ReplyComment
 class TeacherHome(View):
     def get(self, request):
         if request.user.is_authenticated:
+            classview = JoinClassteach.objects.filter(teacher=request.user)
             create = CreateClass.objects.filter(user=request.user)
-            return render(request, 'teacher_home.html', {'create': create})
+            return render(request, 'teacher_home.html', {'create': create, 'classview': classview})
         else:
             return redirect("/")
 
@@ -308,7 +309,7 @@ class ComentreplyView(View):
 def deleltecomment(request, id):
     comment = CommentMain.objects.get(id=id)
     comment.delete()
-    messages.warning(request, "Delete Comment Succesfully")
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -317,3 +318,43 @@ def showreply(request, id):
     comment = CommentMain.objects.get(id=id)
     allreply = ReplyComment.objects.filter(annoucemain=comment)
     return render(request, 'annview.html', {"allreply": allreply})
+
+
+class JoinClassViewTeach(View):
+    def get(self, request):
+        teach = request.user
+        if teach:
+
+            return render(request, 'joinclasssteach.html')
+        else:
+            return redirect("/")
+
+    def post(self, request):
+        classveiw = request.POST.get("class_code")
+        mycalss = CreateClass.objects.get(classcode=classveiw)
+        teach = request.user
+        joiclassalready = JoinClassteach.objects.filter(
+            teacher=request.user, myclass__classcode=classveiw)
+        craeteclassalready = CreateClass.objects.filter(
+            user=request.user, classcode=classveiw)
+        joinclassave = JoinClassteach(teacher=teach, myclass=mycalss)
+        if joiclassalready or craeteclassalready:
+            messages.warning(request, "Class Already Exits")
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        else:
+            joinclassave.save()
+            return redirect("/teacher")
+
+
+class FullClassworkView(View):
+    def get(self, request, id):
+        myclassview = CreateClass.objects.get(id=id)
+        annoucement = Announcement.objects.filter(classview=myclassview)
+        return render(request, 'streamte.html', {'annoucement': annoucement})
+
+
+class AnnouceViewTeach(View):
+    def get(self, request, id):
+        annoucementview = Announcement.objects.get(pk=id)
+        return render(request, 'anounceviewteach.html', {'annoucementview': annoucementview})
