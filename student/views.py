@@ -176,17 +176,17 @@ def deleletwork(request, id):
 def deleltecommentstu(request, id):
     comment = CommentMain.objects.get(id=id)
     comment.delete()
-    messages.warning(request, "Delete Comment Succesfully")
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class EditCommentview(View):
     def get(self, request, id):
-        student = request.session.get("student")
+
         mycom = CommentMain.objects.get(pk=id)
         form = CommentForm(instance=mycom)
-        if student:
-            return render(request, 'editcomment.html', {'form': form})
+
+        return render(request, 'editcomment.html', {'form': form})
 
     def post(self, request, id):
         student = request.session.get("student")

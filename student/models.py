@@ -1,7 +1,7 @@
 from django.db import models
 from teacher.models import CreateClass, Announcement, AddClassWork
 from mainapp.models import Student
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -12,7 +12,10 @@ class JoinClass(models.Model):
 
 class CommentMain(models.Model):
     annoucemain = models.ForeignKey(Announcement, on_delete=models.CASCADE)
-    mystu = models.ForeignKey(Student, on_delete=models.CASCADE)
+    mystu = models.ForeignKey(
+        Student, on_delete=models.CASCADE, default=1, blank=True, null=True)
+    myteach = models.ForeignKey(
+        User, on_delete=models.CASCADE, default=1, blank=True, null=True)
     comment = models.TextField()
 
     def __str__(self):

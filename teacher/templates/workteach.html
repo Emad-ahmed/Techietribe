@@ -2,7 +2,7 @@
 
 {% load static %} <br />
 
-{% block title %}Stream{% endblock title %} <br />
+{% block title %}Work{% endblock title %} <br />
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/card.css' %}" />
@@ -14,10 +14,10 @@
   referrerpolicy="no-referrer"
 />
 <ul class="list-group list-group-horizontal col-12">
-  <li class="list-group-item bg-dark text-white col-3 text-center">
+  <li class="list-group-item text-white col-3 text-center">
     <a href="{% url 'class_view_work_teach' mainid %}">Stream</a>
   </li>
-  <li class="list-group-item col-3 text-center text-white">
+  <li class="list-group-item bg-dark col-3 text-center text-white">
     <a href="{% url 'classworkviewteach' mainid %}">Work</a>
   </li>
   <li class="list-group-item col-3 text-center">
@@ -28,9 +28,9 @@
 
 <div class="container mt-5">
   <ul class="list-group">
-    {% for annouce in annoucement %}
+    {% for work in classwork %}
     <li class="list-group-item mb-4" aria-current="true">
-      <a href="{% url 'annouceviewteach' annouce.id  %}">{{annouce.text}}</a>
+      <a href="{% url 'addclassworkfullview' work.id %}">{{work.mytopic}}</a>
     </li>
     {% endfor %}
   </ul>

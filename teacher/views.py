@@ -3,7 +3,7 @@ from email import message
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
 from django.views import View
-
+from student.forms import CommentForm
 from mainapp.forms import SignForm
 from .models import CreateClass, Announcement, AddClassWork, JoinClassteach, QuesModel, AddCourse, ViewCourse
 from .forms import AnnouncementForm, CreateClassForm, AddClassWorkForm, MyPasswordChangeForm, QuesModelForm
@@ -351,10 +351,53 @@ class FullClassworkView(View):
     def get(self, request, id):
         myclassview = CreateClass.objects.get(id=id)
         annoucement = Announcement.objects.filter(classview=myclassview)
-        return render(request, 'streamte.html', {'annoucement': annoucement})
+        return render(request, 'streamte.html', {'annoucement': annoucement, 'mainid': id})
 
 
 class AnnouceViewTeach(View):
     def get(self, request, id):
         annoucementview = Announcement.objects.get(pk=id)
-        return render(request, 'anounceviewteach.html', {'annoucementview': annoucementview})
+        comment_view = CommentMain.objects.filter(
+            annoucemain=annoucementview)[::-1]
+        return render(request, 'anounceviewteach.html', {'annoucementview': annoucementview,  'comment_view': comment_view})
+
+    def post(self, request, id):
+        annoucementview = Announcement.objects.get(pk=id)
+        comment = request.POST.get("commenttext")
+        commentsave = CommentMain(
+            annoucemain=annoucementview, myteach=request.user, comment=comment)
+        commentsave.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class EditCommentviewTeach(View):
+    def get(self, request, id):
+
+        mycom = CommentMain.objects.get(pk=id)
+        form = CommentForm(instance=mycom)
+
+        return render(request, 'editcommentteach.html', {'form': form})
+
+    def post(self, request, id):
+        teacher = request.user
+
+        mycom = CommentMain.objects.get(pk=id)
+        form = CommentForm(request.POST, instance=mycom)
+
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.myteach = teacher
+            obj.annoucemain = mycom.annoucemain
+            obj.save()
+            messages.success(request, "Successfully Edited")
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class WorkViewteacher(View):
+    def get(self, request, id):
+        allclass = JoinClassteach.objects.get(id=id)
+        my_class = CreateClass.objects.get(
+            classcode=allclass.myclass.classcode)
+        classwork = AddClassWork.objects.filter(myclass=my_class)
+        return render(request, 'work.html', {'classwork': classwork, 'mainid': id})
