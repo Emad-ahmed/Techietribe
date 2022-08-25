@@ -450,7 +450,9 @@ class FullWorkViewTeach(View):
 class PeopleView(View):
     def get(self, request, id):
 
-        create = CreateClass.objects.filter(id=id)
-        joinclass = JoinClass.objects.filter(myclass=create)
+        create = CreateClass.objects.get(id=id)
 
-        return render(request, "peopleview.html", {"mainid": id})
+        joinclass = JoinClass.objects.filter(myclass=create)
+        joinclassteacher = JoinClassteach.objects.filter(myclass=create)
+
+        return render(request, "peopleview.html", {"mainid": id, "joinstudent": joinclass, "joinclassteacher": joinclassteacher})

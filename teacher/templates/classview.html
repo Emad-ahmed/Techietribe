@@ -30,7 +30,9 @@
   <li class="list-group-item col-3 text-center">
     <a href="{% url 'examview' mainid %}">Exam Info</a>
   </li>
-  <li class="list-group-item col-3 text-center"><a href="">People</a></li>
+  <li class="list-group-item col-3 text-center">
+    <a href="{% url 'peopleview' mainid %}">People</a>
+  </li>
 </ul>
 {% if messages %}
 <ul class="messages">

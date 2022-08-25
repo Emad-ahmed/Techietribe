@@ -38,7 +38,9 @@
               <a href="{% url 'deletecard' cr.id %}"
                 ><i class="fa-solid fa-calendar-xmark me-3"></i
               ></a>
-              <a href=""><i class="fa-solid fa-person"></i></a>
+              <a href="{% url 'peopleview' cr.id %}"
+                ><i class="fa-solid fa-person"></i
+              ></a>
             </div>
           </div>
         </a>
