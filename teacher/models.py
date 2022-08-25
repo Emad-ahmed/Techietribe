@@ -1,3 +1,4 @@
+from audioop import reverse
 from pyexpat import model
 from statistics import mode
 from django.db import models
@@ -24,6 +25,9 @@ class CreateClass(models.Model):
 
     def __str__(self):
         return self.class_code_name
+
+    def get_absoulte_url(self):
+        return reverse("classshow", kwargs={"id": self.id})
 
 
 class Announcement(models.Model):
@@ -63,6 +67,7 @@ class AddClassWork(models.Model):
 
 
 # Create your models here.
+
 
     def __str__(self):
         return self.myclass.class_code_name

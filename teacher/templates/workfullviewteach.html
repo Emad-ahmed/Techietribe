@@ -1,0 +1,81 @@
+{% extends 'base_teacher.html' %} <br />
+
+{% load static %} <br />
+
+{% block title %}{% endblock title %} <br />
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/card.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+  integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li
+    {%
+    if
+    message.tags
+    %}
+    class="bg-{{ message.tags }} p-4 text-center"
+    {%
+    endif
+    %}
+  >
+    {{ message }}
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<div class="container">
+  <h1 class="text-center mt-5 mb-5 text-dark fw-bold">Work</h1>
+  <div class="row">
+    <div class="col-lg-8">
+      <h5>{{classwork.myclass.class_code_name}}</h5>
+    </div>
+    <div class="col-lg-4">
+      {% if not teachworkview %}
+      <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+          <input type="file" name="myfile" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-info mt-3">Add Work</button>
+      </form>
+      {% else %}
+      <a>{{teachworkview.work}}</a>
+      <div>
+        <a
+          href="{% url 'deleletwork' teachworkview.id %}"
+          class="btn btn-danger mt-3"
+          >Unsubmit</a
+        >
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="mt-5 m-auto align-center">
+    <h1 class="text-dark">{{annoucementview.text}}</h1>
+  </div>
+
+  <hr />
+</div>
+
+<div class="container mt -5">
+  <hr class="mt-5 mb-3" />
+  {% for com in comment_view %}
+  <h2>{{com.teachwork.first_name}} {{com.teachwork.last_name}}</h2>
+  <p>{{com.comment}}</p>
+  {% endfor %}
+</div>
+
+{% endblock content %}

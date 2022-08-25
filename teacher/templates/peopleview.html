@@ -2,7 +2,7 @@
 
 {% load static %} <br />
 
-{% block title %}Work{% endblock title %} <br />
+{% block title %}People{% endblock title %} <br />
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/card.css' %}" />
@@ -28,14 +28,4 @@
   </li>
 </ul>
 
-<div class="container mt-5">
-  <ul class="list-group">
-    {% for work in classwork %}
-    <li class="list-group-item mb-4" aria-current="true">
-      <a href="{% url 'fullworkviewteach' work.id %}">{{work.mytopic}}</a>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-
-{% endblock content %}
+<div class="container mt-5">{% endblock content %}</div>

@@ -1,10 +1,11 @@
 from ast import Return
 from email import message
+from posixpath import join
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
 from django.views import View
 from student.forms import CommentForm
-from mainapp.forms import SignForm
+from mainapp.forms import SignForm, TeacherEditRegisterForm
 from .models import CreateClass, Announcement, AddClassWork, JoinClassteach, QuesModel, AddCourse, ViewCourse
 from .forms import AnnouncementForm, CreateClassForm, AddClassWorkForm, MyPasswordChangeForm, QuesModelForm
 from django.contrib import messages
@@ -16,7 +17,9 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseNotFound
 
 from teacher.forms import ViewCourseForm, AddlinkForm
-from student.models import CommentMain, Student, ReplyComment
+from student.models import CommentMain, JoinClass, Student, ReplyComment
+from student.models import StudnetWork
+from django.urls import reverse_lazy
 
 
 class TeacherHome(View):
@@ -30,7 +33,7 @@ class TeacherHome(View):
 
 
 class CreateClassview(View):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             fm = CreateClassForm()
             return render(request, 'createclass.html', {'form': fm})
@@ -44,6 +47,8 @@ class CreateClassview(View):
             obj.user = request.user
             obj.save()
             messages.success(request, "Successfully Saved")
+            return HttpResponseRedirect('/teacher/classshow/%d/' % obj.pk)
+
         else:
             messages.warning(request, "Failed To Saved")
         return render(request, 'createclass.html', {'form': fm})
@@ -171,8 +176,19 @@ class PasswordChangeView(View):
 
 class UpdateAccountView(View):
     def get(self, request):
-        form = SignForm(instance=request.user)
+        form = TeacherEditRegisterForm(instance=request.user)
         return render(request, 'upadte_account.html', {'form': form})
+
+    def post(self, request):
+
+        form = TeacherEditRegisterForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+        else:
+            return HttpResponse("eror")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class EditworkView(View):
@@ -331,7 +347,10 @@ class JoinClassViewTeach(View):
 
     def post(self, request):
         classveiw = request.POST.get("class_code")
-        mycalss = CreateClass.objects.get(classcode=classveiw)
+        try:
+            mycalss = CreateClass.objects.get(classcode=classveiw)
+        except:
+            mycalss = None
         teach = request.user
         joiclassalready = JoinClassteach.objects.filter(
             teacher=request.user, myclass__classcode=classveiw)
@@ -396,8 +415,42 @@ class EditCommentviewTeach(View):
 
 class WorkViewteacher(View):
     def get(self, request, id):
-        allclass = JoinClassteach.objects.get(id=id)
-        my_class = CreateClass.objects.get(
-            classcode=allclass.myclass.classcode)
-        classwork = AddClassWork.objects.filter(myclass=my_class)
-        return render(request, 'work.html', {'classwork': classwork, 'mainid': id})
+        try:
+            allclass = JoinClassteach.objects.get(id=id)
+            my_class = CreateClass.objects.get(
+                classcode=allclass.myclass.classcode)
+            classwork = AddClassWork.objects.filter(myclass=my_class)
+            return render(request, 'workteach.html', {'classwork': classwork, 'mainid': id})
+        except:
+            allclass = None
+            return render(request, 'workteach.html', {'mainid': id})
+
+
+class FullWorkViewTeach(View):
+    def get(self, request, id):
+
+        classwork = AddClassWork.objects.get(id=id)
+        try:
+            teachworkview = StudnetWork.objects.get(mywork=classwork)
+        except:
+            teachworkview = None
+
+        return render(request, 'workfullviewteach.html', {'classwork': classwork, 'teachworkview': teachworkview})
+
+    def post(self, request, id):
+        classwork = AddClassWork.objects.get(id=id)
+        myfile = request.FILES['myfile']
+        classwork = AddClassWork.objects.get(id=id)
+        allfile = StudnetWork(teachwork=request.user,
+                              mywork=classwork, work=myfile)
+        allfile.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class PeopleView(View):
+    def get(self, request, id):
+
+        create = CreateClass.objects.filter(id=id)
+        joinclass = JoinClass.objects.filter(myclass=create)
+
+        return render(request, "peopleview.html", {"mainid": id})

@@ -80,3 +80,17 @@ class StudentEditRegisterForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
 
         }
+
+
+class TeacherEditRegisterForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name',
+                  'last_name', 'email']
+
+        widgets = {
+            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
+        }

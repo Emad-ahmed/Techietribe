@@ -127,10 +127,7 @@ class FullWorkView(View):
 
     def post(self, request, id):
         classwork = AddClassWork.objects.get(id=id)
-        try:
-            stuwork = StudnetWork.objects.get(mywork=classwork)
-        except:
-            stuwork = None
+
         student = request.session.get("student")
         print(student)
         myfile = request.FILES['myfile']
@@ -198,8 +195,10 @@ class EditCommentview(View):
             obj = form.save(commit=False)
             obj.mystu = mystu
             obj.annoucemain = mycom.annoucemain
+
             obj.save()
             messages.success(request, "Successfully Edited")
+            return HttpResponseRedirect('/student/annouceview/%d/' % mycom.annoucemain.id)
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -232,3 +231,9 @@ class EditStudent(View):
         else:
             return HttpResponse("eror")
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def deletejoinclass(request, id):
+    joinclass = JoinClass.objects.get(id=id)
+    joinclass.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

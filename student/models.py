@@ -28,6 +28,9 @@ class ReplyComment(models.Model):
 
 
 class StudnetWork(models.Model):
-    mystu = models.ForeignKey(Student, on_delete=models.CASCADE)
+    mystu = models.ForeignKey(
+        Student, on_delete=models.CASCADE, null=True, blank=True, default=1)
+    teachwork = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True, default=1)
     mywork = models.ForeignKey(AddClassWork, on_delete=models.CASCADE)
     work = models.FileField(upload_to='images/')

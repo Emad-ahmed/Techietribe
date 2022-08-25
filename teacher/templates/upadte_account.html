@@ -3,6 +3,12 @@
 {% block title %}Update Account{% endblock title %} <br />
 
 {% block content %}
+
+<style>
+  #id_password1, #id_password2{
+    visibility: hidden;
+  }
+</style>
 <link rel="stylesheet" href="{% static 'css/form.css' %}">
 {% if messages %}
 <ul class="messages">
@@ -56,4 +62,14 @@
     </div><!-- tab-content -->
     
 </div> <!-- /form -->
+
+<script>
+  const input1 = document.getElementById('id_password1');
+
+  input1.removeAttribute('required');
+
+  const input2 = document.getElementById('id_password2');
+
+  input2.removeAttribute('required');
+</script>
 {% endblock content %}
