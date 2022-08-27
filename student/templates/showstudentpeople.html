@@ -1,0 +1,55 @@
+{% extends 'base_student.html' %} <br />
+
+{% load static %} <br />
+
+{% load mathfilters %} <br />
+
+{% block title %}Work{% endblock title %} <br />
+
+{% block content %}
+
+<style>
+  a {
+    text-decoration: none;
+  }
+</style>
+
+<ul class="list-group list-group-horizontal col-12">
+  <li class="list-group-item col-3 text-center">
+    <a href="{% url 'class_view_work' mainid %}">Stream</a>
+  </li>
+  <li class="list-group-item col-3 text-center text-white">
+    <a href="{% url 'classworkview' mainid %}">Work</a>
+  </li>
+  <li class="list-group-item col-3 text-center">
+    <a href="{% url 'examshowstudent' mainid %}">Exam Info</a>
+  </li>
+  <li class="list-group-item col-3 text-center bg-dark text-white">
+    <a href="{% url 'show_people_work_view_student' mainid %}">People</a>
+  </li>
+</ul>
+
+<div class="container">
+  {% if joinclassteacher %}
+  <h2 class="mt-4 fw-bold text-success">Teachers</h2>
+
+  {% for t in joinclassteacher %}
+  <p>{{forloop.counter}})</p>
+  <h6>{{t.teacher.first_name}} {{t.teacher.last_name}}</h6>
+  {% endfor %}
+  <hr />
+  {% endif %}
+
+  <br />
+
+  {% if joinstudent %}
+  <h2 class="mt-4 fw-bold text-success">Classmates</h2>
+  <hr />
+  {% for s in joinstudent %}
+  <p>{{forloop.counter}})</p>
+  <h6>{{s.student.first_name}} {{s.student.last_name}}</h6>
+  <hr class="w-25" />
+  {% endfor %} {% endif %}
+</div>
+
+{% endblock content %}

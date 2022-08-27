@@ -1,5 +1,6 @@
 from ast import Return
 from email import message
+from msilib.schema import Class
 from posixpath import join
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
@@ -20,6 +21,7 @@ from teacher.forms import ViewCourseForm, AddlinkForm
 from student.models import CommentMain, JoinClass, Student, ReplyComment
 from student.models import StudnetWork
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 
 class TeacherHome(View):
@@ -368,8 +370,9 @@ class JoinClassViewTeach(View):
 
 class FullClassworkView(View):
     def get(self, request, id):
-        myclassview = CreateClass.objects.get(id=id)
-        annoucement = Announcement.objects.filter(classview=myclassview)
+        myclassview = JoinClassteach.objects.get(id=id)
+        annoucement = Announcement.objects.filter(
+            classview=myclassview.myclass)
         return render(request, 'streamte.html', {'annoucement': annoucement, 'mainid': id})
 
 
@@ -456,3 +459,27 @@ class PeopleView(View):
         joinclassteacher = JoinClassteach.objects.filter(myclass=create)
 
         return render(request, "peopleview.html", {"mainid": id, "joinstudent": joinclass, "joinclassteacher": joinclassteacher})
+
+
+class ExamShowTeacher(View):
+    def get(self, request, id):
+        mywork = JoinClassteach.objects.get(pk=id)
+        exam = QuesModel.objects.filter(myclass=mywork.myclass)[::-1]
+        return render(request, "showexamviewteacher.html", {'exam': exam, "mainid": id})
+
+
+def deletejoinclassteach(request, id):
+
+    deleteclass = JoinClassteach.objects.get(id=id)
+    deleteclass.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def show_people_work_view(request, id):
+
+    joinclass = JoinClassteach.objects.get(id=id)
+    print(joinclass.myclass)
+    joinclassteacher = JoinClassteach.objects.filter(myclass=joinclass.myclass)
+    joinstudent = JoinClass.objects.filter(myclass=joinclass.myclass)
+    return render(request, "peopleviewjoin.html", {'mainid': id, "joinclassteacher": joinclassteacher, "joinstudent": joinstudent})

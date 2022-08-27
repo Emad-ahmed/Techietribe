@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from mainapp.models import Student
 from .models import JoinClass, CommentMain, StudnetWork, ReplyComment
-from teacher.models import AddClassWork, CreateClass, Announcement
+from teacher.models import AddClassWork, CreateClass, Announcement, QuesModel, JoinClassteach
 # Create your views here.
 from django.contrib import messages
 from teacher.models import AddCourse, ViewCourse
@@ -237,3 +237,17 @@ def deletejoinclass(request, id):
     joinclass = JoinClass.objects.get(id=id)
     joinclass.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class ExamShowStudent(View):
+    def get(self, request, id):
+        mywork = JoinClass.objects.get(pk=id)
+        exam = QuesModel.objects.filter(myclass=mywork.myclass)[::-1]
+        return render(request, "showexamviewstudent.html", {'exam': exam, "mainid": id})
+
+
+def show_people_work_view_student(request, id):
+    joinclass = JoinClass.objects.get(id=id)
+    joinclassteacher = JoinClassteach.objects.filter(myclass=joinclass.myclass)
+    joinstudent = JoinClass.objects.filter(myclass=joinclass.myclass)
+    return render(request, "showstudentpeople.html", {'mainid': id, "joinclassteacher": joinclassteacher, "joinstudent": joinstudent})

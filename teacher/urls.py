@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import MyCourseform, TeacherHome, CreateClassview, ClassShow, deleltecomment, userlogout, deletecard, deletelist, Addworkview, ShowWorkview, deletework, PasswordChangeView, UpdateAccountView, pdf_view, EditworkView, EditAnnouceView, ExamView, ShowQuizView, MyCourse, MyCourseform, MyLinkform, MyCourseView, AnnView, ComentreplyView, showreply, JoinClassViewTeach, FullClassworkView, AnnouceViewTeach, EditCommentviewTeach, WorkViewteacher, FullWorkViewTeach, PeopleView
+from .views import MyCourseform, TeacherHome, CreateClassview, ClassShow, deleltecomment, userlogout, deletecard, deletelist, Addworkview, ShowWorkview, deletework, PasswordChangeView, UpdateAccountView, pdf_view, EditworkView, EditAnnouceView, ExamView, ShowQuizView, MyCourse, MyCourseform, MyLinkform, MyCourseView, AnnView, ComentreplyView, showreply, JoinClassViewTeach, FullClassworkView, AnnouceViewTeach, EditCommentviewTeach, WorkViewteacher, FullWorkViewTeach, PeopleView, ExamShowTeacher, deletejoinclassteach, show_people_work_view
 urlpatterns = [
     path('', TeacherHome.as_view(), name='home'),
     path('create', CreateClassview.as_view(), name='create'),
@@ -38,4 +38,10 @@ urlpatterns = [
          FullWorkViewTeach.as_view(), name='fullworkviewteach'),
     path('peopleview/<int:id>/',
          PeopleView.as_view(), name='peopleview'),
+    path('examshowteach/<int:id>/',
+         ExamShowTeacher.as_view(), name='examshowteach'),
+    path('deletejoinclassteach/<int:id>/',
+         deletejoinclassteach, name='deletejoinclassteach'),
+    path('show_people_work_view/<int:id>/',
+         show_people_work_view, name='show_people_work_view'),
 ]

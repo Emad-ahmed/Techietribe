@@ -2,7 +2,7 @@
 
 {% load static %} <br />
 
-{% block title %}Work{% endblock title %} <br />
+{% block title %}People{% endblock title %} <br />
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/card.css' %}" />
@@ -14,28 +14,41 @@
   referrerpolicy="no-referrer"
 />
 <ul class="list-group list-group-horizontal col-12">
-  <li class="list-group-item text-white col-3 text-center">
+  <li class="list-group-item col-3 text-center">
     <a href="{% url 'class_view_work_teach' mainid %}">Stream</a>
   </li>
-  <li class="list-group-item bg-dark col-3 text-center text-white">
+  <li class="list-group-item col-3 text-center text-white">
     <a href="{% url 'classworkviewteach' mainid %}">Work</a>
   </li>
   <li class="list-group-item col-3 text-center">
     <a href="{% url 'examshowteach' mainid %}">Exam Info</a>
   </li>
-  <li class="list-group-item col-3 text-center">
+  <li class="list-group-item col-3 text-center bg-dark text-white">
     <a href="{% url 'show_people_work_view' mainid %}">People</a>
   </li>
 </ul>
 
-<div class="container mt-5">
-  <ul class="list-group">
-    {% for work in classwork %}
-    <li class="list-group-item mb-4" aria-current="true">
-      <a href="{% url 'fullworkviewteach' work.id %}">{{work.mytopic}}</a>
-    </li>
-    {% endfor %}
-  </ul>
+<div class="container">
+  {% if joinclassteacher %}
+  <h2 class="mt-4 fw-bold text-success">Teachers</h2>
+
+  {% for t in joinclassteacher %}
+  <p>{{forloop.counter}})</p>
+  <h6>{{t.teacher.first_name}} {{t.teacher.last_name}}</h6>
+  {% endfor %}
+  <hr />
+  {% endif %}
+
+  <br />
+
+  {% if joinstudent %}
+  <h2 class="mt-4 fw-bold text-success">Classmates</h2>
+  <hr />
+  {% for s in joinstudent %}
+  <p>{{forloop.counter}})</p>
+  <h6>{{s.student.first_name}} {{s.student.last_name}}</h6>
+  <hr class="w-25" />
+  {% endfor %} {% endif %}
 </div>
 
 {% endblock content %}

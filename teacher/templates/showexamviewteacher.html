@@ -1,0 +1,47 @@
+{% extends 'base_teacher.html' %} <br />
+
+{% load static %} <br />
+
+{% load mathfilters %} <br />
+
+{% block title %}Work{% endblock title %} <br />
+
+{% block content %}
+
+<style>
+  a {
+    text-decoration: none;
+  }
+</style>
+
+<ul class="list-group list-group-horizontal col-12">
+  <li class="list-group-item text-white col-3 text-center">
+    <a href="{% url 'class_view_work_teach' mainid %}">Stream</a>
+  </li>
+  <li class="list-group-item col-3 text-center">
+    <a href="{% url 'classworkviewteach' mainid %}">Work</a>
+  </li>
+  <li class="list-group-item col-3 text-center bg-dark text-white">
+    <a href="{% url 'examshowteach' mainid %}">Exam Info</a>
+  </li>
+  <li class="list-group-item col-3 text-center">
+    <a href="{% url 'show_people_work_view' mainid %}">People</a>
+  </li>
+</ul>
+
+<div class="container mt-4">
+  <div class="list-group">
+    {% for ann in exam %}
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center mb-4 p-3"
+    >
+      <a href="{% url 'showquiz' ann.id %}" class="text-decoration-none">
+        {{ann.topics}}
+      </a>
+
+      {% endfor %}
+    </li>
+  </div>
+</div>
+
+{% endblock content %}

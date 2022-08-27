@@ -21,9 +21,11 @@
     <a href="{% url 'classworkviewteach' mainid %}">Work</a>
   </li>
   <li class="list-group-item col-3 text-center">
-    <a href="">Exam Info</a>
+    <a href="{% url 'examshowteach' mainid %}">Exam Info</a>
   </li>
-  <li class="list-group-item col-3 text-center"><a href="">People</a></li>
+  <li class="list-group-item col-3 text-center">
+    <a href="{% url 'show_people_work_view' mainid %}">People</a>
+  </li>
 </ul>
 
 <div class="container mt-5">
