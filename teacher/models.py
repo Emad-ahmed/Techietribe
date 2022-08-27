@@ -26,9 +26,6 @@ class CreateClass(models.Model):
     def __str__(self):
         return self.class_code_name
 
-    def get_absoulte_url(self):
-        return reverse("classshow", kwargs={"id": self.id})
-
 
 class Announcement(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -67,7 +64,6 @@ class AddClassWork(models.Model):
 
 
 # Create your models here.
-
 
     def __str__(self):
         return self.myclass.class_code_name

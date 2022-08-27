@@ -50,6 +50,7 @@
   </div>
 </section>
 
+{% if classview %}
 <h1 class="text-dark fw-bold mt-5">Join Class</h1>
 <section class="wrapper mb-5">
   <div class="container">
@@ -81,6 +82,7 @@
       {% endfor %}
     </div>
   </div>
+  {% endif %}
 </section>
 
 {% endblock content %}

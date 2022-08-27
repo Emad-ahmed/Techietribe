@@ -17,7 +17,6 @@ class SignForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username',  'first_name', 'last_name', 'email')
-        labels = {'email': "Email"}
 
         widgets = {
             'username': forms.TextInput(attrs={'placeholder': 'Username'}),
@@ -33,6 +32,15 @@ class SignForm(UserCreationForm):
 
         return email
 
+    def clean_password(self):
+        password1 = self.cleaned_data['password1']
+        password2 = self.cleaned_data['password2']
+
+        if password1 != password2:
+            raise forms.ValidationError("Password Not Match")
+
+        return password2
+
 
 class StudentRegisterForm(forms.ModelForm):
     class Meta:
@@ -42,7 +50,7 @@ class StudentRegisterForm(forms.ModelForm):
         labels = {'cpassword': 'Confirm Password'}
 
         widgets = {
-            'id_no': forms.TextInput(attrs={'placeholder': 'Id No'}),
+            'id_no': forms.NumberInput(attrs={'placeholder': 'Id No'}),
             'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
             'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
@@ -56,6 +64,14 @@ class StudentRegisterForm(forms.ModelForm):
             raise forms.ValidationError("Email Already Exists")
 
         return email
+
+    def clean_id_no(self):
+        id_no = self.cleaned_data['id_no']
+        id_no = str(id_no)
+        if len(id_no) != 10:
+            raise forms.ValidationError("Student Id No is not valid")
+
+        return id_no
 
 
 class LoginForm(AuthenticationForm):

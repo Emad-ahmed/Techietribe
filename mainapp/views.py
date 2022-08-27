@@ -1,20 +1,18 @@
 from pyexpat.errors import messages
-from re import M
+
 from django.shortcuts import redirect, render
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
-from django.http import HttpResponseRedirect
+
 from django.views import View
 from .forms import SignForm, StudentRegisterForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-# Create your views here.
 from .models import Student
 
 
 class LoginTeacherView(View):
     def get(self, request):
-
         fm = LoginForm()
         return render(request, 'login_teacher.html', {'form': fm, 'teacher_login': 'active'})
 
@@ -69,6 +67,7 @@ class RegisterTeacherView(View):
         if fm.is_valid():
             messages.success(request, 'Saved  successfully!')
             fm.save()
+            return redirect("/")
         return render(request, 'register_teacher.html', {'form': fm, 'teacher_register': 'active'})
 
 
@@ -83,8 +82,6 @@ class RegisterStudentView(View):
             password = fm.cleaned_data['password']
             cpassword = fm.cleaned_data['cpassword']
 
-            if password != cpassword:
-                messages.warning(request, 'Password Not Match')
             mypassword = make_password(password)
             mypassword1 = make_password(cpassword)
             obj = fm.save(commit=False)
@@ -92,6 +89,8 @@ class RegisterStudentView(View):
             obj.cpassword = mypassword1
             obj.save()
             messages.success(request, 'Saved  successfully!')
+            return redirect("student_login")
+
         else:
             messages.warning(request, 'Not Saved')
 
